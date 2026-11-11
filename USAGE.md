@@ -1,17 +1,20 @@
-# 2.1.0 使用流程
+# Usage guide
 
-> Update 2026-11-11: GitHub Actions native builds and all 82 tests passed on Windows, Linux, macOS ARM64 and macOS Intel (zero skips). See [CI_REPORT.md](CI_REPORT.md) for evidence and downloads. Earlier validation statements below are historical.
+## 1. Choose a release package
 
-## 1. 选择对应系统
+Select the ZIP matching both your operating system and Python process architecture.
+Windows and Linux use x86_64. macOS packages are separate for Apple Silicon (ARM64)
+and Intel (x86_64). The native artifacts were built and tested on Windows Server
+2025, Ubuntu 22.04, and macOS 15. Compatibility with older operating systems is
+not established by these tests. In particular, these are not the earlier Zig
+cross-compiled Linux glibc 2.28 or macOS 13 packages.
 
-解压新版 All-Platforms 压缩包，进入 windows-x86_64、linux-x86_64、macos-arm64
-或 macos-x86_64。需要 Python 3.9+ 且进程架构一致。Linux 目标 glibc 2.28+；
-macOS 目标 13+。Linux/macOS 已构建及检查接口，尚未完成原生运行验证。
+The all-platforms ZIP contains the same four packages in separate directories.
+Python is required but not bundled. Core computation has no third-party Python dependencies.
 
-计算无需第三方 Python 包，也不需要 Visual Studio、MFC 或编译器。
-系统运行库和 Python 解释器不随包分发。
+## 2. Run the examples
 
-## 2. 运行示例
+From the extracted platform directory:
 
 ```text
 python demo.py
@@ -20,12 +23,13 @@ python manufacturing_demo.py --layers 5 --output analysis.json
 python -m unittest discover -s tests -v
 ```
 
-macOS/Linux 可使用 python3。示例自动构造几何体，不需要下载模型。
-analysis_demo 演示新版向量判断、网格属性、边中点和 Bézier。
+The examples construct their own geometry. A supplied model can be used with
+`python demo.py path/to/part.stl`. Use python3 if required on your system.
+The NumPy-specific test may skip when NumPy is absent; test STL fixtures are included.
 
-## 3. 接入自己的程序
+## 3. Use the library in a project
 
-将当前平台的整个 mesh_testbed 文件夹复制到脚本旁边，不要只替换 DLL。
+Copy the entire mesh_testbed folder beside your script:
 
 ```python
 from mesh_testbed import Mesh
@@ -41,35 +45,41 @@ with Mesh.from_arrays(vertices, faces) as mesh:
     mesh.save('tetrahedron.stl')
 ```
 
-已有 STL 可使用 `with Mesh('part.stl') as mesh:`。数值单位由调用者统一。
-四面体判断无需先创建 Mesh，适合批量计算；任意封闭实体用 classify_points。
+For an STL file, use `with Mesh('part.stl') as mesh:`. Units must be consistent.
+Use tetrahedron for a batch against one four-vertex element; use classify_points
+for a general closed mesh. Context managers release native resources.
 
-## 4. 可选显示
+## 4. Optional display
+
+For CPython 3.11 matching the package architecture, install the bundled wheels offline:
 
 ```text
-python -m pip install -r requirements-display.txt
+python -m pip install --no-index --find-links wheels -r requirements-display.txt
 python demo.py --show
 ```
 
-显示依赖 NumPy、Polyscope 和桌面 OpenGL 驱动；依赖清单固定历史验证版本，
-可用 wheel 由 pip 检查。不含离线显示 wheel。无界面服务器不要调用 show。
+Other Python versions can install compatible wheels from PyPI:
 
-## 5. 常见问题
+```text
+python -m pip install -r requirements-display.txt
+```
 
-- 无法加载动态库：检查系统、处理器/Python 架构、库文件及系统运行库。
-- 缺少扩展：旧 ABI 2 库不一定有新版接口；替换整个 2.1.0 包。
-- 导入了旧库：检查脚本旁是否有旧 mesh_testbed，或 MESH_CORE_LIBRARY 是否指定旧文件。
-- 体积或质量失败：检查网格闭合、面方向、退化面；并非所有网格都代表有效实体。
-- 四面体返回状态 2：退化或接近退化；不能用其权重做插值。
-- 顶点面积和总面积不一致：barycentric 总和等于总面积，HW4 tile 总和等于总面积的 1/4。
+Display requires a desktop OpenGL driver. Do not call show on a headless server.
+Bundled wheel availability is checked during packaging; the current native CI does
+not test interactive rendering or all driver configurations.
 
-## 6. 开发与验证
+## 5. Troubleshooting
 
-源码开发可将 python 目录加入 PYTHONPATH。CMake 构建命令见 README。
-tools/build_zig.py 可构建四个目标；tools/package.py 生成平台包，
-tools/audit_packages.py 检查导出并验证 Windows 平台包，
-tools/package_bundle.py 生成总包。新增接口定义见 API.md 与 include/mesh_core.h。
-本轮详细结果保存在 reports/release-2.1.0，历史报告不作为新版测试证据。
+- Loader error: check OS, CPU/Python architecture, library location and system runtimes.
+- Missing extension: replace the complete package; ABI 2 alone does not identify all features.
+- Unexpected old behavior: check for a nearby old mesh_testbed copy or MESH_CORE_LIBRARY override.
+- Solid operation rejected: inspect closure, winding and degenerate faces.
+- Tetrahedron state 2: degenerate or nearly degenerate; weights cannot be used for interpolation.
+- Vertex area mismatch: barycentric areas sum to total area; HW4 tile areas sum to one quarter.
 
-本轮没有将 HW5 的 FEM/拓扑优化求解器或期中的 AI 模型放入几何库。
-它们保留独立依赖和 Python 调用流程，后续可通过网格接口连接。
+## 6. Reproduce the release
+
+The release workflow downloads the previously tested native artifacts, verifies
+each binary against the corresponding suite.json SHA256, adds English documents,
+optional display wheels, examples and test evidence, and creates release ZIPs.
+It does not rebuild or substitute the tested dynamic libraries.

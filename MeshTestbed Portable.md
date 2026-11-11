@@ -120,7 +120,7 @@ Existing test records show that all 67 tests passed in the Windows source enviro
 
 Linux and macOS libraries have been cross-compiled and their binary interfaces inspected, but native runtime testing on those systems remains pending. A cross-platform build workflow has been prepared; it still needs to be run and maintained on the target systems.
 
-The library currently supports triangular-mesh geometry analysis and selected manufacturing preprocessing tasks. It does not yet provide STEP / IGES exact surface modeling, full Boolean operations, finite element solvers, complete toolpath planning, or G-code generation. Deep learning framework integration is also not yet implemented. See the [full test report (Chinese)](reports/full-test-2026-09-26/测试报告.md) for detailed evidence.
+The library currently supports triangular-mesh geometry analysis and selected manufacturing preprocessing tasks. It does not yet provide STEP / IGES exact surface modeling, full Boolean operations, finite element solvers, complete toolpath planning, or G-code generation. Deep learning framework integration is also not yet implemented. See the [full test report](reports/release-2.1.0/TEST_REPORT.md) for detailed evidence.
 
 ## 5. Future Plans
 

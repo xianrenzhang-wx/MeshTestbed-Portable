@@ -1,94 +1,43 @@
-# MeshTestbed Portable 2.1.0 完成与测试报告
+# Local completion and test report — 2.1.0
 
-报告日期：2026-11-11。范围：本轮 HW4/HW7 通用计算集成、Bézier 发布统一和现有几何功能回归。
+Date: 2026-11-11. Scope: HW4 local mesh properties, HW7 tetrahedron predicates,
+Bézier distribution consistency and regression of existing geometry APIs.
 
-## 1. 完成情况
+Implemented batch classification/weights/degeneracy, face properties, unique edges,
+two explicitly named vertex area measures, native version export and ABI-2 additive
+interfaces. Original homework applications remain unchanged as references.
+No FEM/topology optimizer, AI runtime, point-triangle or point-plane public API was added.
 
-| 项目 | 结果 |
-|---|---|
-| HW7 向量判断 | C++ 批量四面体内外/边界/退化分类，返回重心坐标；Python 接口 tetrahedron |
-| HW4 网格属性 | 面心、单位法向、面面积、唯一边/中点、barycentric 顶点面积、单独命名的 HW4 tile 面积 |
-| HW6 Bézier | 原有三次曲线/双三次曲面扩展纳入四个平台的统一构建与包 |
-| 版本 | Python 与原生 release 2.1.0；保留 ABI 2，新增 mc_version 和三个分析接口 |
-| 使用材料 | API.md、USAGE.md、CHANGELOG.md、analysis_demo.py、C 头文件 |
-| 发布 | 四个平台独立包和一个 All-Platforms 总包，附 SHA256 校验 |
+Windows: 82/82 main tests passed with no skips. Original compatibility suites passed
+4 HW4, 10 HW6 and 14 HW7 tests. The Cylinder face centroids, midpoints and HW4 tile
+areas agreed with original Python; 1,000 random tetrahedron queries (seed 211)
+agreed in states and weights. These checks overlap; their counts are not additive
+independent-feature coverage. The earlier extracted local package passed 80 tests
+and skipped two because NumPy and original model fixtures were not included.
 
-原始作业代码保留，作为对照与演示。没有改写 HW5 优化器、期中 AI 模型或旧 GUI；没有新增点三角形/点平面公共接口，这些仍是后续扩展。
+Fifteen added tests cover analytic states/weights, 300 affine-transformed random
+points, large/small scales, degeneracy, tolerances, invalid inputs, empty batches,
+analytic triangle properties, partition sums, transforms, isolated vertices,
+resource lifetime, short/null native buffers and Bézier analytic/invalid cases.
+The previous 67 tests cover STL, topology, mass, transforms, distances, collision,
+sections, slicing, concurrency and resource management.
 
-## 2. 实测结论
+Integration fixes: synchronized previously missing Bézier exports in packages;
+separated HW4 tile area (sum = total area/4) from barycentric area (sum = total area);
+corrected a comparison-script import path shadowed by an old homework package;
+updated historical-hash-bound packaging scripts for the new release.
 
-| 验证 | 结果 |
-|---|---|
-| Windows 主套件 | 82/82 通过，0 失败、0 错误、0 跳过 |
-| HW4 原有兼容性测试 | 4/4 通过，指定新版 DLL |
-| HW6 原有兼容性测试 | 10/10 通过，指定新版 DLL |
-| HW7 原有兼容性测试 | 14/14 通过，指定新版 DLL |
-| HW4 独立对照 | Cylinder 的面心、边中点和 HW4 tile 面积与原 Python 实现一致 |
-| HW7 独立对照 | 固定种子 211 的 1000 个随机点，状态与权重和原 Python 实现一致 |
-| Windows 平台 ZIP / 总 ZIP | 解压后 -S 模式运行，三个示例成功；82 项中 80 通过、2 预期跳过 |
-| 四平台二进制 | 架构、导出接口、依赖检查通过，包含全部 25 个声明接口 |
-| Linux/macOS 原生执行 | 未执行；不计作通过 |
-| 新版交互式显示 | 本轮未重测；仅有历史版本 Windows 显示证据 |
+At the time of local verification, non-Windows execution remained pending. It has
+since passed in native CI; see ../../CI_REPORT.md. Interactive GUI rendering was
+not repeated for 2.1.0. No memory-sanitizer run, exact-predicate proof or new speed
+benchmark was performed. Floating-point and solid-input limitations remain.
 
--S 模式不加载 site-packages；两个跳过来自可选 NumPy 与未随运行包分发的原工程模型。包内基本计算示例无第三方 Python 依赖。兼容性测试与主套件存在覆盖重叠，不将其简单相加当作独立功能数。
+Evidence: suite.json/suite.log, homework logs, homework_comparison.json and packages.json.
+Run tools/run_test_suite.py with PYTHONPATH and MESH_CORE_LIBRARY set to the intended package.
 
-## 3. 测试方法与覆盖
+Native DLL SHA256: `f96c33b990e3c2b32b2f204510f2fc52681c0b3a7375b685189408824c920428`
 
-新增 15 项主测试覆盖解析四面体状态与权重、300 个随机重心坐标经剪切/反向/平移后的恢复、大小尺度与大平移、退化几何、容差边界、非有限输入、空批次、解析三角形属性、面积求和恒等式、变换后的更新、孤立顶点、零面积法向、关闭后访问、原生空指针/短缓冲区，以及 Bézier 解析结果和非法输入。
-
-其余 67 项回归覆盖 STL 读写、损坏文件、拓扑、质量/惯性、变换、最近点、内外判断、碰撞、包含、截面、切片、资源管理及并发等。随机测试固定种子，但不是穷举证明；未执行专门内存检测器、精确算术证明或新增性能基准。
-
-## 4. 实施中发现并处理的问题
-
-1. 原源码含 Bézier 扩展，而旧总包缺失：统一四个平台编译源文件与 Python 模块，按头文件检查所有导出。
-2. HW4 的 tile 面积不是完整顶点对偶面积：分别提供两个明确命名的量，并验证总和分别为总面积和总面积的 1/4。
-3. 本地多个作业目录带有旧 mesh_testbed 副本：对照脚本第一次导入旧副本而无法找到 analysis；调整导入路径后通过。此为测试路径问题，不是数值算法错误。使用指南已列出排查方法。
-4. 旧打包脚本绑定历史版本与历史 hash：更新到 2.1.0 独立输出与本轮审计证据，旧压缩包及报告保留。
-
-## 5. 数值与使用边界
-
-四面体容差按无量纲权重/归一化行列式定义，不能当成欧氏距离。近退化元素可能被返回状态 2，权重为 None；不应继续用于插值。有限精度和极端坐标可能产生误差或溢出错误。网格实体计算仍要求合适的闭合/方向/非退化输入，自相交等尚未全面验证。新增局部属性允许开口网格，唯一边按索引去重，不进行坐标焊接。旧版 ABI 2 不保证含所有新版扩展，升级应替换整个包。
-
-## 6. 运行环境与二进制证据
-
-- Windows 环境：`Windows-11-10.0.26200-SP0`
-- Python：`3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]`
-- 主套件时间：0.741 秒（本次运行，不作为性能承诺）
-- Windows DLL SHA256：`f96c33b990e3c2b32b2f204510f2fc52681c0b3a7375b685189408824c920428`
-
-| 目标 | 架构 | 导出数 | 缺失 | 系统依赖 |
-|---|---|---|---|---|
-| windows-x86_64 | 0x8664 | 25 | 0 | api-ms-win-crt-convert-l1-1-0.dll, api-ms-win-crt-locale-l1-1-0.dll, api-ms-win-crt-runtime-l1-1-0.dll, api-ms-win-crt-string-l1-1-0.dll, KERNEL32.dll, api-ms-win-crt-heap-l1-1-0.dll, api-ms-win-crt-stdio-l1-1-0.dll, api-ms-win-crt-private-l1-1-0.dll |
-| linux-x86_64 | EM_X86_64 | 25 | 0 | libm.so.6, libpthread.so.0, libc.so.6, libdl.so.2, ld-linux-x86-64.so.2 |
-| macos-arm64 | 16777228 | 25 | 0 | /usr/lib/libSystem.B.dylib |
-| macos-x86_64 | 16777223 | 25 | 0 | /usr/lib/libSystem.B.dylib |
-
-## 7. 复现与证据文件
-
-源码根目录下设置 PYTHONPATH 为 python，MESH_CORE_LIBRARY 为匹配的新版库，运行：
-
-```text
-python tools/run_test_suite.py --output reports/release-2.1.0/suite.json
-python -m unittest discover -s ../HW4_BRep -v
-python -m unittest discover -s ../HW6_Bezier -v
-python -m unittest discover -s ../HW7_Vector -v
-python tools/package.py
-python tools/audit_packages.py
-python tools/package_bundle.py
-```
-
-主套件完整环境使用 NumPy；作业测试还使用对应作业的依赖。二进制审计额外依赖 pefile、pyelftools、macholib，均为开发工具依赖，运行包无需安装。交叉编译命令见 README/tools/build_zig.py。
-
-- suite.json / suite.log：逐项结果、环境、DLL hash。
-- HW4_BRep.log、HW6_Bezier.log、HW7_Vector.log：原作业兼容性结果。
-- homework_comparison.json：原实现对照结论。
-- packages.json：四平台架构、依赖、导出、hash、Windows 平台包示例及测试日志。
-- 总包旁 .validation.json：总包解压后的实际示例和测试输出。
-- 总包旁 .zip.sha256：最终压缩包校验值。
-
-## 8. 主套件逐项结果
-
-| 用例 | 状态 | 秒 |
+| Test | Status | Seconds |
 |---|---|---|
 | `test_analysis.AnalysisTests.test_bezier_curve_analytic` | passed | 0.030444 |
 | `test_analysis.AnalysisTests.test_bezier_invalid` | passed | 0.000075 |

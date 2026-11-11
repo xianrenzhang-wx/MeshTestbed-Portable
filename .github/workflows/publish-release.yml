@@ -1,0 +1,39 @@
+name: Publish tested 2.1.0 artifacts
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-release.yml'
+      - 'tools/publish_release.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: publish-v2.1.0
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install packaging inspectors
+        run: python -m pip install pefile macholib
+      - name: Package and publish verified native artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/publish_release.py
+      - name: Preserve packaging output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-packaging-evidence
+          path: |
+            release-assets/
+            release-notes.md
