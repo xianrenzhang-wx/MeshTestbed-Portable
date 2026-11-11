@@ -1,5 +1,7 @@
 # MeshTestbed Portable 2.1.0
 
+> Update 2026-11-11: GitHub Actions native builds and all 82 tests passed on Windows, Linux, macOS ARM64 and macOS Intel (zero skips). See [CI_REPORT.md](CI_REPORT.md) for evidence and downloads. Earlier validation statements below are historical.
+
 本轮新增批量四面体判断/重心坐标、面心/法向/面积、唯一边/中点和两种顶点面积；Bézier 扩展已统一到四个平台构建中。
 
 - [使用流程](USAGE.md)

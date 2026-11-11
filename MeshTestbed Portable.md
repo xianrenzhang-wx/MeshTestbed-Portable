@@ -1,5 +1,7 @@
 # MeshTestbed Portable: Background, Technical Approach, and Future Plans
 
+> Update 2026-11-11: GitHub Actions native builds and all 82 tests passed on Windows, Linux, macOS ARM64 and macOS Intel (zero skips). See [CI_REPORT.md](CI_REPORT.md) for evidence and downloads. Earlier validation statements below are historical.
+
 ## 1. Background
 
 This project aims to provide a portable, high-performance geometry library that can be called from Python, supporting future CAD, CAE, and CAM research, simulation workflows, and large-scale optimization.

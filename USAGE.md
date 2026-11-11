@@ -1,5 +1,7 @@
 # 2.1.0 使用流程
 
+> Update 2026-11-11: GitHub Actions native builds and all 82 tests passed on Windows, Linux, macOS ARM64 and macOS Intel (zero skips). See [CI_REPORT.md](CI_REPORT.md) for evidence and downloads. Earlier validation statements below are historical.
+
 ## 1. 选择对应系统
 
 解压新版 All-Platforms 压缩包，进入 windows-x86_64、linux-x86_64、macos-arm64

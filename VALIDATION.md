@@ -1,5 +1,7 @@
 # 2.1.0 验证入口
 
+> Update 2026-11-11: GitHub Actions native builds and all 82 tests passed on Windows, Linux, macOS ARM64 and macOS Intel (zero skips). See [CI_REPORT.md](CI_REPORT.md) for evidence and downloads. Earlier validation statements below are historical.
+
 本轮结果见 reports/release-2.1.0/TEST_REPORT.md（总包 docs/release-2.1.0）。下面的 2.0.x 结果是历史记录。
 
 # 验证记录：v2 网格几何与制造分析
