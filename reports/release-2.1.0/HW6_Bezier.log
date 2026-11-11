@@ -1,0 +1,15 @@
+test_affine_invariance (test_homework6.BezierTests.test_affine_invariance) ... ok
+test_curve_polynomial_and_endpoints (test_homework6.BezierTests.test_curve_polynomial_and_endpoints) ... ok
+test_curve_random_against_de_casteljau (test_homework6.BezierTests.test_curve_random_against_de_casteljau) ... ok
+test_edits_3d_and_basis_influence (test_homework6.BezierTests.test_edits_3d_and_basis_influence) ... ok
+test_export_roundtrip (test_homework6.BezierTests.test_export_roundtrip) ... ok
+test_invalid_edit_is_transactional (test_homework6.BezierTests.test_invalid_edit_is_transactional) ... ok
+test_native_buffer_rejection (test_homework6.BezierTests.test_native_buffer_rejection) ... ok
+test_surface_polynomial_every_point (test_homework6.BezierTests.test_surface_polynomial_every_point) ... ok
+test_surface_random_non_square_sampling (test_homework6.BezierTests.test_surface_random_non_square_sampling) ... ok
+test_triangles_native_topology_and_orientation (test_homework6.BezierTests.test_triangles_native_topology_and_orientation) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.340s
+
+OK

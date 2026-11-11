@@ -1,0 +1,5 @@
+{
+  "HW4": "Cylinder face centroids, edge midpoints and centroidal tile areas agree with original Python",
+  "HW7": "1000 random points: states and weights agree with original Python",
+  "status": "passed"
+}

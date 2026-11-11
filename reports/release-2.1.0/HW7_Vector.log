@@ -1,0 +1,19 @@
+test_bad_input (test_homework7.Tests.test_bad_input) ... ok
+test_barycentric_reconstruction (test_homework7.Tests.test_barycentric_reconstruction) ... ok
+test_both_stl_formats (test_homework7.Tests.test_both_stl_formats) ... ok
+test_cavity (test_homework7.Tests.test_cavity) ... ok
+test_concave (test_homework7.Tests.test_concave) ... ok
+test_cube_random (test_homework7.Tests.test_cube_random) ... ok
+test_degenerate (test_homework7.Tests.test_degenerate) ... ok
+test_design (test_homework7.Tests.test_design) ... ok
+test_global_winding_reverse (test_homework7.Tests.test_global_winding_reverse) ... ok
+test_inconsistent_orientation_rejected (test_homework7.Tests.test_inconsistent_orientation_rejected) ... ok
+test_native_agreement_tetra (test_homework7.Tests.test_native_agreement_tetra) ... ok
+test_open_rejected (test_homework7.Tests.test_open_rejected) ... ok
+test_tetra_cases (test_homework7.Tests.test_tetra_cases) ... ok
+test_vertex_order (test_homework7.Tests.test_vertex_order) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.144s
+
+OK

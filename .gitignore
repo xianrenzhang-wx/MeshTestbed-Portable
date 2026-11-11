@@ -1,0 +1,11 @@
+/build*/
+/dist/
+__pycache__/
+*.pyc
+*.dll
+*.so
+*.dylib
+*.lib
+*.pdb
+*.obj
+*.o

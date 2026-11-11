@@ -1,0 +1,59 @@
+name: Native packages
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  build:
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            label: windows-x86_64
+          - os: ubuntu-22.04
+            label: linux-x86_64
+          - os: macos-15
+            label: macos-arm64
+          - os: macos-15-intel
+            label: macos-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependency
+        run: python -m pip install numpy==2.3.5
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build --config Release --parallel
+      - run: ctest --test-dir build -C Release --output-on-failure
+      - run: cmake --install build --config Release --prefix dist
+      - name: Test installed package
+        working-directory: dist
+        run: |
+          python analysis_demo.py
+          python demo.py
+          python manufacturing_demo.py --layers 3 --output analysis.json
+          python -m unittest discover -s tests -v
+      - name: Record installed-package test report
+        shell: python {0}
+        run: |
+          import os, pathlib, subprocess, sys
+          root = pathlib.Path.cwd()
+          package = root / 'dist' / 'mesh_testbed'
+          name = {'win32': 'mesh_core.dll', 'linux': 'libmesh_core.so', 'darwin': 'libmesh_core.dylib'}[sys.platform]
+          env = dict(os.environ, PYTHONPATH=str(root / 'dist'), MESH_CORE_LIBRARY=str(package / name))
+          subprocess.run([sys.executable, str(root / 'tools/run_test_suite.py'), '--output', str(root / 'ci-results/suite.json')], env=env, check=True)
+      - name: Preserve test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.label }}
+          path: |
+            ci-results/
+            build/Testing/Temporary/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mesh-testbed-${{ matrix.label }}
+          path: dist/

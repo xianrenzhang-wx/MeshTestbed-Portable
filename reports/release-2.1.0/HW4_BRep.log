@@ -1,0 +1,9 @@
+test_independent_area_checks (test_homework4_brep.Homework4Tests.test_independent_area_checks) ... ok
+test_supplied_model_counts_and_closed_topology (test_homework4_brep.Homework4Tests.test_supplied_model_counts_and_closed_topology) ... ok
+test_top_five_sorted (test_homework4_brep.Homework4Tests.test_top_five_sorted) ... ok
+test_triangle_area (test_homework4_brep.Homework4Tests.test_triangle_area) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.032s
+
+OK

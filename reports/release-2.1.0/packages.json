@@ -1,0 +1,131 @@
+{
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": [
+    {
+      "target": "windows-x86_64",
+      "architecture": "0x8664",
+      "dependencies": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll"
+      ],
+      "missing_exports": [],
+      "expected_exports": 25,
+      "binary_sha256": "f96c33b990e3c2b32b2f204510f2fc52681c0b3a7375b685189408824c920428",
+      "zip_sha256": "5b737c583811afbfc9d80bbc79f518b473b466169baf948ba43e4d4d525d4552",
+      "zip_bytes": 273342
+    },
+    {
+      "target": "linux-x86_64",
+      "architecture": "EM_X86_64",
+      "dependencies": [
+        "libm.so.6",
+        "libpthread.so.0",
+        "libc.so.6",
+        "libdl.so.2",
+        "ld-linux-x86-64.so.2"
+      ],
+      "missing_exports": [],
+      "expected_exports": 25,
+      "binary_sha256": "cb84229f000a19ca9ce79de240a474097406d9d35db800a81b4b077a37dfa603",
+      "zip_sha256": "57dbd84729357fdf72359b5312210a5e818dd2d6ea908fe0d314182334682547",
+      "zip_bytes": 851687
+    },
+    {
+      "target": "macos-arm64",
+      "architecture": 16777228,
+      "dependencies": [
+        "/usr/lib/libSystem.B.dylib"
+      ],
+      "missing_exports": [],
+      "expected_exports": 25,
+      "binary_sha256": "ff85862de4db4c10d450fd1e746d732254488f0727157ea4f10d475c55e6cd75",
+      "zip_sha256": "6803f9e656c2cc9dfef829c7acef299b35962e3466595d545e552e29080bbcfd",
+      "zip_bytes": 176912
+    },
+    {
+      "target": "macos-x86_64",
+      "architecture": 16777223,
+      "dependencies": [
+        "/usr/lib/libSystem.B.dylib"
+      ],
+      "missing_exports": [],
+      "expected_exports": 25,
+      "binary_sha256": "a06b48b80acdbe942a3985d5d80b8dc5428a397b46bc929bcb7ff91f0d4b2cf3",
+      "zip_sha256": "8d993b26d15e06e30ce864487c4e115d56d5f50a8ab2435e9540a01c2e0962f4",
+      "zip_bytes": 176393
+    }
+  ],
+  "windows_extracted_runs": [
+    {
+      "command": [
+        "python",
+        "-S",
+        "analysis_demo.py"
+      ],
+      "returncode": 0,
+      "stdout": "Tetrahedron: {'states': [-1, 0, 1], 'weights': [(0.4000000000000001, 0.2, 0.2, 0.2), (1.0, 0.0, 0.0, 0.0), (-5.0, 2.0, 2.0, 2.0)]}\nLocal properties: {'face_centroids': [(0.3333333333333333, 0.3333333333333333, 0.0), (0.3333333333333333, 0.0, 0.3333333333333333), (0.0, 0.3333333333333333, 0.3333333333333333), (0.3333333333333333, 0.3333333333333333, 0.3333333333333333)], 'face_normals': [(0.0, 0.0, -1.0), (0.0, -1.0, 0.0), (-1.0, 0.0, 0.0), (0.5773502691896258, 0.5773502691896258, 0.5773502691896258)], 'face_areas': [0.5, 0.5, 0.5, 0.8660254037844386], 'vertex_barycentric_areas': [0.5, 0.6220084679281461, 0.6220084679281461, 0.6220084679281461], 'vertex_centroidal_tile_areas': [0.125, 0.15550211698203653, 0.15550211698203653, 0.15550211698203653]}\nUnique edges: {'indices': [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)], 'midpoints': [(0.5, 0.0, 0.0), (0.0, 0.5, 0.0), (0.0, 0.0, 0.5), (0.5, 0.5, 0.0), (0.5, 0.0, 0.5), (0.0, 0.5, 0.5)]}\nBezier curve: [(0.0, 0.0, 0.0), (1.0000000000000002, 0.0, 0.0), (2.0, 0.0, 0.0), (3.0, 0.0, 0.0)]\nBezier surface: 9 vertices, 8 triangles\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-S",
+        "demo.py"
+      ],
+      "returncode": 0,
+      "stdout": "Vertices, triangles: (4, 4)\nMetrics: {'area': 2.3660254037844384, 'signed_volume': 0.16666666666666666, 'bounds': ((0.0, 0.0, 0.0), (1.0, 1.0, 1.0)), 'boundary_halfedges': 0, 'invalid_halfedges': 0, 'degenerate_faces': 0}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-S",
+        "manufacturing_demo.py",
+        "--layers",
+        "3",
+        "--output",
+        "analysis.json"
+      ],
+      "returncode": 0,
+      "stdout": "Saved analysis.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-S",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "test_bezier_curve_analytic (test_analysis.AnalysisTests.test_bezier_curve_analytic) ... ok\ntest_bezier_invalid (test_analysis.AnalysisTests.test_bezier_invalid) ... ok\ntest_bezier_surface_analytic (test_analysis.AnalysisTests.test_bezier_surface_analytic) ... ok\ntest_closed_and_owned_results (test_analysis.AnalysisTests.test_closed_and_owned_results) ... ok\ntest_degenerate_normals_and_isolated_vertex (test_analysis.AnalysisTests.test_degenerate_normals_and_isolated_vertex) ... ok\ntest_invalid_and_empty (test_analysis.AnalysisTests.test_invalid_and_empty) ... ok\ntest_native_buffers (test_analysis.AnalysisTests.test_native_buffers) ... ok\ntest_partition_and_transform (test_analysis.AnalysisTests.test_partition_and_transform) ... ok\ntest_random_affine_reconstruction (test_analysis.AnalysisTests.test_random_affine_reconstruction) ... ok\ntest_scale_and_translation (test_analysis.AnalysisTests.test_scale_and_translation) ... ok\ntest_single_triangle_properties (test_analysis.AnalysisTests.test_single_triangle_properties) ... ok\ntest_tetra_degenerate (test_analysis.AnalysisTests.test_tetra_degenerate) ... ok\ntest_tetra_states_and_weights (test_analysis.AnalysisTests.test_tetra_states_and_weights) ... ok\ntest_tolerances (test_analysis.AnalysisTests.test_tolerances) ... ok\ntest_version (test_analysis.AnalysisTests.test_version) ... ok\ntest_ascii_scientific_and_whitespace (test_full_validation.FullValidation.test_ascii_scientific_and_whitespace) ... ok\ntest_binary_nan_and_truncation (test_full_validation.FullValidation.test_binary_nan_and_truncation) ... ok\ntest_closed_pair_and_save_access (test_full_validation.FullValidation.test_closed_pair_and_save_access) ... ok\ntest_copy_is_independent (test_full_validation.FullValidation.test_copy_is_independent) ... ok\ntest_each_rotation_axis (test_full_validation.FullValidation.test_each_rotation_axis) ... ok\ntest_general_affine_shear_volume (test_full_validation.FullValidation.test_general_affine_shear_volume) ... ok\ntest_invalid_transform_and_axis (test_full_validation.FullValidation.test_invalid_transform_and_axis) ... ok\ntest_native_creation_failure_clears_handle (test_full_validation.FullValidation.test_native_creation_failure_clears_handle) ... ok\ntest_native_output_guards (test_full_validation.FullValidation.test_native_output_guards) ... ok\ntest_parallel_same_mesh_reads (test_full_validation.FullValidation.test_parallel_same_mesh_reads) ... ok\ntest_random_rotated_nearest_points (test_full_validation.FullValidation.test_random_rotated_nearest_points) ... ok\ntest_repeat_resource_lifecycle (test_full_validation.FullValidation.test_repeat_resource_lifecycle) ... ok\ntest_save_failure_does_not_leave_new_file (test_full_validation.FullValidation.test_save_failure_does_not_leave_new_file) ... ok\ntest_save_failure_preserves_existing_file (test_full_validation.FullValidation.test_save_failure_preserves_existing_file) ... ok\ntest_section_far_from_plane_origin (test_full_validation.FullValidation.test_section_far_from_plane_origin) ... ok\ntest_signed_distance_and_mass_scaling (test_full_validation.FullValidation.test_signed_distance_and_mass_scaling) ... ok\ntest_bbox_overlap_does_not_imply_collision (test_geometry.GeometryTests.test_bbox_overlap_does_not_imply_collision) ... ok\ntest_bvh_against_analytic_cube_distance (test_geometry.GeometryTests.test_bvh_against_analytic_cube_distance) ... ok\ntest_bvh_invalidation (test_geometry.GeometryTests.test_bvh_invalidation) ... ok\ntest_closed_geometry_lifetime (test_geometry.GeometryTests.test_closed_geometry_lifetime) ... ok\ntest_collision_corner_touch (test_geometry.GeometryTests.test_collision_corner_touch) ... ok\ntest_collision_separation_touch_overlap (test_geometry.GeometryTests.test_collision_separation_touch_overlap) ... ok\ntest_collision_tolerance_and_repeated_self_query (test_geometry.GeometryTests.test_collision_tolerance_and_repeated_self_query) ... ok\ntest_concave_prism (test_geometry.GeometryTests.test_concave_prism) ... ok\ntest_containment (test_geometry.GeometryTests.test_containment) ... ok\ntest_coplanar_triangle_collision (test_geometry.GeometryTests.test_coplanar_triangle_collision) ... ok\ntest_crossing_section_rejected (test_geometry.GeometryTests.test_crossing_section_rejected) ... ok\ntest_cube_sections_and_coplanar_diagonals (test_geometry.GeometryTests.test_cube_sections_and_coplanar_diagonals) ... ok\ntest_degenerate_unsigned_distance (test_geometry.GeometryTests.test_degenerate_unsigned_distance) ... ok\ntest_disconnected_component_containment (test_geometry.GeometryTests.test_disconnected_component_containment) ... ok\ntest_empty_queries_and_errors (test_geometry.GeometryTests.test_empty_queries_and_errors) ... ok\ntest_exact_section_without_welding_tolerance (test_geometry.GeometryTests.test_exact_section_without_welding_tolerance) ... ok\ntest_hollow_solid (test_geometry.GeometryTests.test_hollow_solid) ... ok\ntest_mass_cube (test_geometry.GeometryTests.test_mass_cube) ... ok\ntest_mass_reversed_orientation (test_geometry.GeometryTests.test_mass_reversed_orientation) ... ok\ntest_mass_tetrahedron (test_geometry.GeometryTests.test_mass_tetrahedron) ... ok\ntest_mass_translation_rotation (test_geometry.GeometryTests.test_mass_translation_rotation) ... ok\ntest_mass_validation (test_geometry.GeometryTests.test_mass_validation) ... ok\ntest_nearest_triangle_regions (test_geometry.GeometryTests.test_nearest_triangle_regions) ... ok\ntest_numpy_geometry_results (test_geometry.GeometryTests.test_numpy_geometry_results) ... skipped 'Optional NumPy is not installed'\ntest_oblique_section (test_geometry.GeometryTests.test_oblique_section) ... ok\ntest_open_section_and_branch (test_geometry.GeometryTests.test_open_section_and_branch) ... ok\ntest_pair_lock_order (test_geometry.GeometryTests.test_pair_lock_order) ... ok\ntest_random_box_collision_and_clearance (test_geometry.GeometryTests.test_random_box_collision_and_clearance) ... ok\ntest_scale_and_translation_sections (test_geometry.GeometryTests.test_scale_and_translation_sections) ... ok\ntest_signed_classification (test_geometry.GeometryTests.test_signed_classification) ... ok\ntest_slicing_axes (test_geometry.GeometryTests.test_slicing_axes) ... ok\ntest_surface_mode_open_mesh (test_geometry.GeometryTests.test_surface_mode_open_mesh) ... ok\ntest_tangent_and_empty_sections (test_geometry.GeometryTests.test_tangent_and_empty_sections) ... ok\ntest_tolerance_validation (test_geometry.GeometryTests.test_tolerance_validation) ... ok\ntest_triangle_piercing (test_geometry.GeometryTests.test_triangle_piercing) ... ok\ntest_analytic_tetrahedron (test_mesh.MeshTests.test_analytic_tetrahedron) ... ok\ntest_ascii_stl (test_mesh.MeshTests.test_ascii_stl) ... ok\ntest_c_buffer_checks (test_mesh.MeshTests.test_c_buffer_checks) ... ok\ntest_concurrent_independent_instances (test_mesh.MeshTests.test_concurrent_independent_instances) ... ok\ntest_corrupt_stl (test_mesh.MeshTests.test_corrupt_stl) ... ok\ntest_failed_transform_is_atomic (test_mesh.MeshTests.test_failed_transform_is_atomic) ... ok\ntest_inconsistent_orientation (test_mesh.MeshTests.test_inconsistent_orientation) ... ok\ntest_invalid_arrays (test_mesh.MeshTests.test_invalid_arrays) ... ok\ntest_lifetime (test_mesh.MeshTests.test_lifetime) ... ok\ntest_nonmanifold_and_degenerate (test_mesh.MeshTests.test_nonmanifold_and_degenerate) ... ok\ntest_open_mesh (test_mesh.MeshTests.test_open_mesh) ... ok\ntest_reflection (test_mesh.MeshTests.test_reflection) ... ok\ntest_reverse_halfedges (test_mesh.MeshTests.test_reverse_halfedges) ... ok\ntest_supplied_models (test_mesh.MeshTests.test_supplied_models) ... skipped 'Original teaching data not included in this package'\ntest_transform (test_mesh.MeshTests.test_transform) ... ok\ntest_unicode_binary_roundtrip (test_mesh.MeshTests.test_unicode_binary_roundtrip) ... ok\n\n----------------------------------------------------------------------\nRan 82 tests in 0.328s\n\nOK (skipped=2)\n"
+    }
+  ],
+  "source_sha256": {
+    "src\\mesh_analysis.cpp": "2612b6e144c7384c68c287303327adb8f09665b2ed7109bc91bc4fc23caa305c",
+    "src\\mesh_bezier.cpp": "29a17d71e21f3ffa1ba42f2d1869e242e1f29f451742d28abc185299777ca3b8",
+    "src\\mesh_core.cpp": "f74e87b70bb1ffc98b0f7e1e725adc4476239674a42111bca3c403c89c8f8a3c",
+    "src\\mesh_geometry.cpp": "af42d9f75464f14f3240787dd563c384e253bce6f8a17765a6c9c11a3c08475d",
+    "src\\mesh_internal.h": "7ccd084078dab0126bda9fd1e99011f68dfd950814a1cf5cbe0b8869ada13f5a",
+    "include\\mesh_core.h": "adb835b7ae8df486395769cec3b49dfe009bd932339dcfeb4622c500bdbff7bf",
+    "python\\mesh_testbed\\analysis.py": "1e21c9fef8e3bea783ba1d7f8b4f2e56b9aa250b55afa6c8e3b02f412f9a7deb",
+    "python\\mesh_testbed\\bezier.py": "520e082ebe68c641729152cc0eba69eb0e00085995816b5caf153a71bb5e638f",
+    "python\\mesh_testbed\\geometry.py": "536ace7cd12787faf3aee9d9ff97b329f10212c018a39471b14858ee249d46a5",
+    "python\\mesh_testbed\\__init__.py": "dbc4bfe22cad1c36d56a6038ffe0beb4b511609b6fd1f54ab5f164badfa4c8ee",
+    "tests\\test_analysis.py": "b13d77c61238aedda474ccb9dc347c8c48f79017e905590594b3ef373506f396",
+    "tests\\test_full_validation.py": "b03ba7cb61027e61dd8f12c6ce4571403f3b9f1e4ee8659097e177a235ce6d4d",
+    "tests\\test_geometry.py": "fac787881b44f0af7a6e4a0d3560f24cbf7b8c05cbeddc294fbd16817c9ade20",
+    "tests\\test_mesh.py": "6c9c5e31f9d4cff081888f2e95e02c9d075ca0a4d5efcf434400b35411ab5bda"
+  }
+}
